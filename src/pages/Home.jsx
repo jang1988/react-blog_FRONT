@@ -1,16 +1,29 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
+import axios from '../axios';
 
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
+import { fetchPosts } from '../redux/slices/posts';
 
 export const Home = () => {
+  const dispatch = useDispatch()
+  React.useEffect(() => {
+    dispatch(fetchPosts());
+  }, []);
+
   return (
-    <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
+    <div>
+      <Tabs
+        style={{ marginBottom: 15 }}
+        value={0}
+        aria-label="basic tabs example"
+      >
         <Tab label="Новые" />
         <Tab label="Популярные" />
       </Tabs>
@@ -30,12 +43,16 @@ export const Home = () => {
               viewsCount={150}
               commentsCount={3}
               tags={['react', 'fun', 'typescript']}
+              isLoading={true}
               isEditable
             />
           ))}
         </Grid>
         <Grid xs={4} item>
-          <TagsBlock items={['react', 'typescript', 'заметки']} isLoading={false} />
+          <TagsBlock
+            items={['react', 'typescript', 'заметки']}
+            isLoading={false}
+          />
           <CommentsBlock
             items={[
               {
@@ -57,6 +74,6 @@ export const Home = () => {
           />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
