@@ -11,7 +11,7 @@ import styles from './Login.module.scss';
 import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
 
 export const Login = () => {
-  const isAuth = useSelector(selectIsAuth)
+  const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
   const {
     register,
@@ -26,15 +26,21 @@ export const Login = () => {
     mode: 'onChange',
   });
 
-  
-  if (isAuth) {
-    return <Navigate to="/" />
-  }
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
 
+    if (!data.payload) {
+      return alert('Не удалось авторизоваться');
+    }
 
-  const onSubmit = (values) => {
-    dispatch(fetchAuth(values));
+    if ('token' in data.payload) {
+      window.localStorage.setItem('token', data.payload.token);
+    }
   };
+
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Paper classes={{ root: styles.root }}>

@@ -8,12 +8,13 @@ import Container from '@mui/material/Container';
 import { logout, selectIsAuth } from '../../redux/slices/auth';
 
 export const Header = () => {
-  const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout())
+      dispatch(logout());
+      window.localStorage.removeItem('token');
     }
   };
 
@@ -30,7 +31,11 @@ export const Header = () => {
                 <Link to="/posts/create">
                   <Button variant="contained">Написать статью</Button>
                 </Link>
-                <Button onClick={onClickLogout} variant="contained" color="error">
+                <Button
+                  onClick={onClickLogout}
+                  variant="contained"
+                  color="error"
+                >
                   Выйти
                 </Button>
               </>
